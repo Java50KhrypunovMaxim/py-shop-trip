@@ -7,7 +7,7 @@ from app.shop import Shop
 
 
 def shop_trip() -> None:
-    with open("config.json", "r") as file:
+    with open("app/config.json", "r") as file:
         config = json.load(file)
 
     fuel_price = config["FUEL_PRICE"]
@@ -38,7 +38,7 @@ def shop_trip() -> None:
         for shop in shops:
             total_cost = customer.calculate_total_cost(shop, fuel_price)
             print(f"{customer.name}'s trip to the {shop.name} "
-                  f"costs {total_cost : .2f}")
+                  f"costs {total_cost:.2f}")
             shop_costs[shop.name] = total_cost
 
         best_shop_name = min(shop_costs, key=shop_costs.get)
@@ -46,7 +46,7 @@ def shop_trip() -> None:
 
         if min_cost > customer.money:
             print(f"{customer.name} doesn't have enough money "
-                  f"to make a purchase in any shop\n")
+                  f"to make a purchase in any shop")
             continue
 
         best_shop = next(shop for shop in shops if shop.name == best_shop_name)
@@ -55,13 +55,13 @@ def shop_trip() -> None:
 
         print(f"Date: {fixed_datetime_str}")
         print(f"Thanks, {customer.name}, "
-              f"for your purchase!\nYou have bought: ")
+              f"for your purchase!\nYou have bought:")
 
         product_cost = customer.calculate_product_cost(best_shop.products)
         for product, qty in customer.product_cart.items():
             if product in best_shop.products:
                 cost = qty * best_shop.products[product]
-                formatted_cost = f"{cost : .1f}" if cost % 1\
+                formatted_cost = f"{cost:.1f}" if cost % 1\
                     else f"{int(cost)}"
                 print(f"{qty} {product}s for {formatted_cost} dollars")
 
@@ -73,4 +73,4 @@ def shop_trip() -> None:
         print(f"{customer.name} rides home")
         customer.return_home()
         customer.update_location(config["customers"][0]["location"])
-        print(f"{customer.name} now has {customer.money : .2f} dollars\n")
+        print(f"{customer.name} now has {customer.money:.2f} dollars\n")
